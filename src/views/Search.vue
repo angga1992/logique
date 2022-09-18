@@ -10,6 +10,7 @@
         <div style="display: flex">
           <div class="Bitmap">
             <img class="img-cover" :src="items.artworkUrl60" alt="" />
+            <img style="position: absolute" src="@/assets/play.svg" alt="" />
           </div>
           <div style="margin-left: 10px; width: 100%">
             <p class="artist">{{ items.artistName }}</p>
@@ -26,9 +27,9 @@
           </div>
         </div>
       </div>
-      <!-- <div class="loadmore">
+      <div class="loadmore" @click="getList(key)">
         <span class="text-load">Load more</span>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -48,6 +49,7 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+    const page = ref(0)
 
     const key = ref("");
     const list = computed({
@@ -56,12 +58,9 @@ export default {
       },
     });
     const getList = (key) => {
-      axios
-        .get(
-          "https://itunes.apple.com/search?term=" + key + "&entity=musicVideo"
-        )
+      axios.get(`https://itunes.apple.com/search?term=${key}&entity=musicVideo&limit=4&offset=${page.value * 4}`)
         .then((res) => {
-          console.log(res);
+          page.value++
           store.commit("SET_LIST", res.data.results);
         })
         .catch(function (error) {
@@ -78,6 +77,7 @@ export default {
       getList,
       key,
       list,
+      page
     };
   },
 };
@@ -123,9 +123,14 @@ export default {
   background-color: #fff;
 }
 .Bitmap {
+  cursor: pointer;
   width: 125px;
   height: 125px;
   background: aliceblue;
+  margin: auto;
+  justify-content: center;
+  display: flex;
+  align-items: center
 }
 .img-cover {
   border-radius: 10px;

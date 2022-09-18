@@ -7,5 +7,4 @@ import VueAxios from 'vue-axios'
 import store from "./store";
 
 
-createApp(App).use(router).use(store).mount('#app')
-App.use(VueAxios, axios)
+createApp(App).use(VueAxios, axios).use(router).use(store).mount('#app')
