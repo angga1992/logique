@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="loadmore" @click="getList(key)">
+      <div v-if="list.length" class="loadmore" @click="getList(key)">
         <span class="text-load">Load more</span>
       </div>
     </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import axios from "axios";
@@ -68,6 +68,13 @@ export default {
         });
     };
 
+    watch(
+      () => route.query.key,
+      () => {
+        key.value = route.query.key
+      }
+    )
+
     onMounted(() => {
       key.value = route.query.key;
       getList(key.value);
@@ -98,6 +105,7 @@ export default {
 .heights {
   width: 372px;
   height: auto;
+  min-height: 100vh;
 }
 .keys {
   width: 91px;
@@ -154,7 +162,8 @@ export default {
   align-items: center;
 }
 .genre {
-  width: 45px;
+  min-width: 45px;
+  padding: 0px 4px;
   height: 20px;
   border-radius: 10px;
   background-color: #10b981;
@@ -213,6 +222,10 @@ export default {
   line-height: normal;
   letter-spacing: 0.5px;
   color: #334155;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 </style>

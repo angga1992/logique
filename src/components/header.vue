@@ -46,11 +46,18 @@ export default {
     const modal = ref("");
     const btn = ref("");
     const span = ref("");
+    const color = ref("#1FBC9C");
+
 
     const key = ref("");
     const search = () => {
       router.push({ path: 'search', query: { key: key.value }})
     };
+
+    const pallete = () => {
+      console.log('masuk')
+      document.getElementById("pallete").click()
+    }
 
     const openModal = () => {
       modal.value.style.display = "block";
@@ -59,6 +66,7 @@ export default {
       modal.value.style.display = "none";
     };
     const getList = (key) => {
+      router.push({ path: 'search', query: { key: key }})
       store.commit("CLEAR_LIST");
       axios.get(`https://itunes.apple.com/search?term=${key}&entity=musicVideo&limit=4&offset=${0 * 4}`)
         .then((res) => {
@@ -90,6 +98,8 @@ export default {
       span,
       openModal,
       closeModal,
+      pallete,
+      color,
     };
   },
 };
