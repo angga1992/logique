@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sticky">
     <div class="header">
       <img class="w-15" src="@/assets/menu.svg" alt="" />
       <img class="ngmusic" src="@/assets/ngmusic.svg" alt="" />
@@ -34,7 +34,7 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
 
@@ -42,22 +42,21 @@ export default {
   name: "header",
   setup() {
     const store = useStore();
-    const router = useRouter()
+    const router = useRouter();
     const modal = ref("");
     const btn = ref("");
     const span = ref("");
     const color = ref("#1FBC9C");
 
-
     const key = ref("");
     const search = () => {
-      router.push({ path: 'search', query: { key: key.value }})
+      router.push({ path: "search", query: { key: key.value } });
     };
 
     const pallete = () => {
-      console.log('masuk')
-      document.getElementById("pallete").click()
-    }
+      console.log("masuk");
+      document.getElementById("pallete").click();
+    };
 
     const openModal = () => {
       modal.value.style.display = "block";
@@ -66,16 +65,21 @@ export default {
       modal.value.style.display = "none";
     };
     const getList = (key) => {
-      router.push({ path: 'search', query: { key: key }})
+      router.push({ path: "search", query: { key: key } });
       store.commit("CLEAR_LIST");
-      axios.get(`https://itunes.apple.com/search?term=${key}&entity=musicVideo&limit=4&offset=${0 * 4}`)
+      axios
+        .get(
+          `https://itunes.apple.com/search?term=${key}&entity=musicVideo&limit=4&offset=${
+            0 * 4
+          }`
+        )
         .then((res) => {
           store.commit("SET_LIST", res.data.results);
-          closeModal()
+          closeModal();
         })
         .catch(function (error) {
           console.log(error);
-          closeModal()
+          closeModal();
         });
     };
     onMounted(() => {
@@ -106,6 +110,11 @@ export default {
 </script>
 
 <style>
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 .header {
   width: 340px;
   height: 30px;
